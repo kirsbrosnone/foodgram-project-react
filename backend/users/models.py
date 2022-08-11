@@ -19,7 +19,7 @@ class CustomUser(AbstractUser):
     )
     last_name = models.CharField(
         max_length=150, blank=False,
-        help_text='Фамилия'
+        help_text='Фамилия',
     )
 
     anon = 'anon'
@@ -46,15 +46,15 @@ class CustomUser(AbstractUser):
 
 
 class Follow(models.Model):
-    """Класс подписок пользователя."""
+    """Класс подписок."""
 
     user = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name='follower',
-        help_text='Подписчик'
+        help_text='Подписчик',
     )
     following = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name='following',
-        help_text='Автор'
+        help_text='Автор',
     )
 
     class Meta:
