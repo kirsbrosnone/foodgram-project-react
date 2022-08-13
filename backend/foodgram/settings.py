@@ -7,12 +7,7 @@ SECRET_KEY = '-sc1)-9vk3q2*rb873uv=8a_3k#^sn3tb%*^eyy0r9v0a74q3o'
 
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '*',
-    'localhost',
-    '127.0.0.1',
-    '84.201.178.60',
-]
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -64,10 +59,6 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -83,7 +74,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -93,4 +84,12 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = '/static/'
+STATIC_URL = '/backend_static/'
+
+STATIC_MEDIA = os.path.join(BASE_DIR, 'static/')
+
+MEDIA_URL = '/backend_media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+AUTH_USER_MODEL = 'users.CustomUser'

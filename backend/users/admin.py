@@ -6,6 +6,8 @@ from .models import CustomUser, Follow
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
+    """Панель администратора класса CustomUser."""
+
     fieldsets = (
         ('Пользователь', {'fields': (
             'email', 'username', 'first_name', 'last_name',
@@ -31,4 +33,6 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(Follow)
 class FollowAdmin(admin.ModelAdmin):
+    """Панель администратора подписок пользователя."""
+
     list_display = ('user', 'author')
