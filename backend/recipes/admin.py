@@ -9,8 +9,8 @@ from .models import (
 class IngredientAdmin(admin.ModelAdmin):
     """Панель администратора ингридиентов."""
 
-    list_display = ('name', 'measurement_unit')
-    list_filter = ('name', 'measurement_unit')
+    list_display = ('name', 'measurement_unit',)
+    list_filter = ('name',)
     empty_value_display = ('-пусто-')
 
 
@@ -18,18 +18,15 @@ class IngredientAdmin(admin.ModelAdmin):
 class AmountOfIngredientAdmin(admin.ModelAdmin):
     """Панель администратора количества ингридиентов."""
 
-    list_display = ('ingredient_recipe', 'amount')
-    list_filter = ('ingredient_recipe', 'amount')
-    empty_value_display = ('-пусто-')
+    list_display = ('ingredient_recipe', 'amount',)
 
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     """Панель администратора тэгов."""
 
-    list_display = ('name', 'color', 'slug')
-    list_filter = ('name', 'color')
-    search_fields = ('name', 'color', 'slug')
+    list_display = ('name', 'color', 'slug',)
+    list_filter = ('name',)
     empty_value_display = ('-пусто-')
 
 
@@ -37,31 +34,27 @@ class TagAdmin(admin.ModelAdmin):
 class RecipeAdmin(admin.ModelAdmin):
     """Панель администратора рецепта."""
 
-    list_display = (
-        'pub_date', 'author', 'name', 'text', 'cooking_time',
-    )
-    list_filter = (
-        'pub_date', 'author', 'name', 'text', 'cooking_time',
-    )
-    search_fields = ('author', 'name', 'text')
+    list_display = ('pub_date', 'author', 'name', 'text', 'cooking_time',)
+    readonly_fields = ('favourites',)
+    list_filter = ('author', 'name', 'tags',)
+    search_fields = ('author', 'name', 'text',)
     empty_value_display = ('-пусто-')
+
+    def favourites(self, obj):
+        return obj.favourite_recipe.count()
 
 
 @admin.register(FavouriteRecipe)
 class FavouriteRecipeAdmin(admin.ModelAdmin):
     """Панель администратора любимых рецептов."""
 
-    list_display = ('user', 'recipe')
-    list_filter = ('user', 'recipe')
-    search_fields = ('user', 'recipe')
-    empty_value_display = ('-пусто-')
+    list_display = ('user', 'recipe',)
+    list_filter = ('user', 'recipe',)
 
 
 @admin.register(ShoppingCart)
 class ShoppingCartAdmin(admin.ModelAdmin):
     """Панель администратора списка покупок."""
 
-    list_display = ('user', 'recipe')
-    list_filter = ('user', 'recipe')
-    search_fields = ('user', 'recipe')
-    empty_value_display = ('-пусто-')
+    list_display = ('user', 'recipe',)
+    list_filter = ('user', 'recipe',)

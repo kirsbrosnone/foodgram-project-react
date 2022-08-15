@@ -116,7 +116,7 @@ class Recipe(models.Model):
 
 
 class FavouriteRecipe(models.Model):
-    """Список избранного у пользователя."""
+    """Список избранных рецептов у пользователя."""
 
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='favourite_recipe',
