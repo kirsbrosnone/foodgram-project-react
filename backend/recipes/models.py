@@ -26,10 +26,10 @@ class Ingredient(models.Model):
 
 
 class AmountOfIngredient(models.Model):
-    """Количество ингридиентов."""
+    """Количество ингредиентов."""
 
     ingredient_recipe = models.ForeignKey(
-        Ingredient, on_delete=models.CASCADE, blank=True,
+        Ingredient, on_delete=models.CASCADE,
         verbose_name='Ингредиент', help_text='Выберите ингридиент',
     )
     amount = models.PositiveSmallIntegerField(
@@ -44,7 +44,7 @@ class AmountOfIngredient(models.Model):
         verbose_name_plural = 'Количество ингридиентов'
 
     def __str__(self):
-        return (f'{self.amount}{self.ingredient_recipe.measurement_unit}'
+        return (f'{self.amount} {self.ingredient_recipe.measurement_unit} '
                 f'{self.ingredient_recipe.name}')
 
 
@@ -56,11 +56,11 @@ class Tag(models.Model):
         help_text='Имя тэга',
     )
     color = models.CharField(
-        'Цвет', max_length=7, unique=True, blank=False, null=True,
+        'Цвет', max_length=7, unique=True, blank=False,
         default='#D3D3D3', help_text='Цвет в формате HEX #D3D3D3',
     )
     slug = models.SlugField(
-        'Слаг', max_length=200, unique=True, blank=False, null=True,
+        'Слаг', max_length=200, unique=True, blank=False,
         help_text='Уникальный слаг',
     )
 
@@ -69,7 +69,7 @@ class Tag(models.Model):
         verbose_name_plural = 'Тэги'
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 class Recipe(models.Model):
@@ -79,22 +79,16 @@ class Recipe(models.Model):
         User, on_delete=models.CASCADE, null=True, related_name='recipes',
         verbose_name='Автор рецепта',
     )
-    name = models.CharField(
-        'Название рецепта', max_length=200, blank=False,
-    )
-    text = models.TextField(
-        'Описание рецепта', blank=False,
-    )
+    name = models.CharField('Название рецепта', max_length=200, blank=False,)
+    text = models.TextField('Описание рецепта', blank=False,)
     ingredients = models.ManyToManyField(
         AmountOfIngredient, blank=False, related_name='recipes',
         verbose_name='Ингредиенты',
     )
     image = models.ImageField(
-        'Изображение рецепта', upload_to='recipe_images', blank=False,
+        'Изображение рецепта', upload_to='recipe_images/', blank=False,
     )
-    tags = models.ManyToManyField(
-        Tag, blank=False,
-    )
+    tags = models.ManyToManyField(Tag, blank=False, related_name='recipes')
     cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления', blank=False, default=1,
         help_text='В минутах',
