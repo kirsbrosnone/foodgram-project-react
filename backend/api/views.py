@@ -180,7 +180,7 @@ class FollowUserViewSet(UserViewSet):
             )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        if request.method == 'DELETE':
+        elif request.method == 'DELETE':
             user = request.user
             author = get_object_or_404(CustomUser, id=id)
             if user == author:
