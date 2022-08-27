@@ -238,22 +238,22 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
         model = ShoppingCart
         fields = ('id', 'name', 'image', 'cooking_time')
 
-    def validate(self, data):
-        user = data['user']
-        recipe = data['recipe']
-        added_to_shop = ShoppingCart.objects.filter(
-            user=user, recipe=recipe
-        )
-        if added_to_shop.exists():
-            raise serializers.ValidationError(
-                'Вы уже добавили рецепт в список покупок'
-            )
-        return data
+    # def validate(self, data):
+    #     user = data['user']
+    #     recipe = data['recipe']
+    #     added_to_shop = ShoppingCart.objects.filter(
+    #         user=user, recipe=recipe
+    #     )
+    #     if added_to_shop.exists():
+    #         raise serializers.ValidationError(
+    #             'Вы уже добавили рецепт в список покупок'
+    #         )
+    #     return data
 
-    def create(self, validated_data):
-        recipe_shop = ShoppingCart.objects.create(**validated_data)
-        recipe_shop.save()
-        return recipe_shop
+    # def create(self, validated_data):
+    #     recipe_shop = ShoppingCart.objects.create(**validated_data)
+    #     recipe_shop.save()
+    #     return recipe_shop
 
 
 class PreviewRecipeSerializer(serializers.ModelSerializer):
