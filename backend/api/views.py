@@ -93,7 +93,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=['GET', 'POST', 'DELETE'], detail=True, 
+    @action(methods=['GET', 'POST', 'DELETE'], detail=True,
             url_path='shopping_cart', permission_classes=[IsAuthenticated, ])
     def shopping_cart(self, request, pk):
         user = request.user
