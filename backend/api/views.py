@@ -51,9 +51,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     queryset = Recipe.objects.all()
     permission_classes = [AdminAuthorOrReadOnly, ]
-    filter_backends = [DjangoFilterBackend, SearchFilter, ]
+    filter_backends = [DjangoFilterBackend, ]
     filterset_class = RecipeFilter
-    search_fields = ['name', 'text', ]
     throttle_scope = 'recipes'
 
     def get_serializer_class(self):
