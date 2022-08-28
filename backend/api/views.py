@@ -60,6 +60,26 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return RecipeWriteSerializer
         return RecipeReadSerializer
 
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     queryset = Recipe.objects.all()
+
+    #     if user.is_authenticated:
+    #         queryset = queryset.annotate(
+    #             is_favorited=Exists(Favorite.objects.filter(
+    #                 user=user, recipe__pk=OuterRef('pk'))
+    #             ),
+    #             is_in_shopping_cart=Exists(Cart.objects.filter(
+    #                 user=user, recipe__pk=OuterRef('pk'))
+    #             )
+    #         )
+    #     else:
+    #         queryset = queryset.annotate(
+    #             is_favorited=Value(False, output_field=BooleanField()),
+    #             is_in_shopping_cart=Value(False, output_field=BooleanField())
+    #         )
+    #     return queryset
+
     def add_recipe_to_list(self, model, user, pk):
         obj = model.objects.filter(user=user, recipe__id=pk)
         if obj.exists():
@@ -78,18 +98,22 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return Response('Рецепт отсуствует в списке',
                         status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=['POST', 'DELETE'], detail=True,
+    @action(methods=['POST'], detail=True,
             url_path='favorite', permission_classes=[IsAuthenticated])
     def favorite(self, request, pk=None):
-        if self.request.method == 'POST':
-            return self.add_recipe_to_list(FavouriteRecipe, request.user, pk)
+        return self.add_recipe_to_list(FavouriteRecipe, request.user, pk)
+
+    @favorite.mapping.delete
+    def del_favorite(self, request, pk=None):
         return self.delete_recipe_from_list(FavouriteRecipe, request.user, pk)
 
-    @action(methods=['POST', 'DELETE'], detail=True,
+    @action(methods=['POST'], detail=True,
             url_path='shopping_cart', permission_classes=[IsAuthenticated])
     def shopping_cart(self, request, pk=None):
-        if self.request.method == 'POST':
-            return self.add_recipe_to_list(ShoppingCart, request.user, pk)
+        return self.add_recipe_to_list(ShoppingCart, request.user, pk)
+
+    @shopping_cart.mapping.delete
+    def del_shopping_cart(self, request, pk=None):
         return self.delete_recipe_from_list(ShoppingCart, request.user, pk)
 
     # @action(methods=['GET', 'POST', 'DELETE'], detail=True,
