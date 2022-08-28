@@ -129,7 +129,7 @@ class RecipeWriteSerializer(RecipeReadSerializer):
 
     def validate(self, data):
         ingredients_data = data.get('ingredients', None)
-        # ingredients_set = set()
+        ingredients_set = set()
         for ingredient in ingredients_data:
             if int(ingredient.get('amount')) <= 0:
                 raise serializers.ValidationError(
@@ -138,12 +138,12 @@ class RecipeWriteSerializer(RecipeReadSerializer):
             if data['ingredients'].count(ingredient) > 1:
                 raise serializers.ValidationError('Ингредиент повторяется')
 
-            # if int(ingredient.get('cooking_time')) <= 0:
-            #     raise serializers.ValidationError('Время готовки в минутах')
+            if int(ingredient.get('cooking_time')) <= 0:
+                raise serializers.ValidationError('Время готовки в минутах')
             # ingredient_id = ingredient.get('id')
             # if ingredient_id in ingredients_set:
             #     raise serializers.ValidationError('Ингредиент повторяется')
-            # ingredients_set.add(ingredient_id)
+            ingredients_set.add(ingredient.get('id'))
 
         if len(data['tags']) == 0:
             raise serializers.ValidationError('Отсутствует тэг')
