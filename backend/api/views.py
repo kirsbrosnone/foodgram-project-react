@@ -42,7 +42,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = IngredientSerializer
     pagination_class = None
     filter_backends = [SearchFilter, ]
-    search_fields = ['^name', ]
+    search_fields = ['^name', '$name', ]
     throttle_scope = 'ingredients'
 
 
