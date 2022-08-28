@@ -98,15 +98,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def shopping_cart(self, request, pk):
         user = request.user
         recipe = get_object_or_404(Recipe, pk=pk)
-        if request.method == 'GET':
-            shop = ShoppingCart.objects.filter(user=user, recipe=recipe)
-            pages = self.paginate_queryset(shop)
-            serializer = ShoppingCartSerializer(
-                pages, many=True, context={'request': request},
-            )
-            return self.get_paginated_response(serializer.data)
-
-        if request.method == 'POST':
+        if self.request.method in ['GET', 'POST']:
             recipe_shop, created = ShoppingCart.objects.get_or_create(
                 user=user, recipe=recipe
             )
@@ -120,7 +112,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 'Рецепт уже в корзине покупок',
                 status=status.HTTP_400_BAD_REQUEST
             )
-        elif request.method == 'DELETE':
+        elif self.request.method == 'DELETE':
             shop = ShoppingCart.objects.filter(user=user, recipe=recipe)
             if shop.exists():
                 shop.delete()
