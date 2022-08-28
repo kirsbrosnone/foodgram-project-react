@@ -30,18 +30,18 @@ class AmountOfIngredient(models.Model):
 
     ingredient_recipe = models.ForeignKey(
         Ingredient, on_delete=models.CASCADE,
-        verbose_name='Ингредиент', help_text='Выберите ингридиент',
+        verbose_name='Ингредиент', help_text='Выберите ингредиент',
     )
     amount = models.PositiveSmallIntegerField(
         'Количество', blank=False, default=1,
         validators=[
-            MinValueValidator(1, 'Минимальное количество ингридиента')
+            MinValueValidator(1, 'Минимальное количество ингредиента')
         ]
     )
 
     class Meta:
-        verbose_name = 'Количество ингридиента'
-        verbose_name_plural = 'Количество ингридиентов'
+        verbose_name = 'Количество ингредиента'
+        verbose_name_plural = 'Количество ингредиентов'
 
     def __str__(self):
         return (f'{self.amount} {self.ingredient_recipe.measurement_unit} '
@@ -57,7 +57,7 @@ class Tag(models.Model):
     )
     color = models.CharField(
         'Цвет', max_length=7, unique=True, blank=False,
-        default='#D3D3D3', help_text='Цвет в формате HEX #D3D3D3',
+        default='#D3D3D3', help_text='Цвет в формате HEX например: #D3D3D3',
     )
     slug = models.SlugField(
         'Слаг', max_length=200, unique=True, blank=False,
