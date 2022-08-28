@@ -1,6 +1,6 @@
 from io import StringIO
 
-from django.db.models import Sum
+from django.db.models import BooleanField, Exists, OuterRef, Sum, Value
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -8,7 +8,7 @@ from djoser.views import UserViewSet
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
 from rest_framework.response import Response
 
 from api.filters import RecipeFilter
@@ -56,29 +56,27 @@ class RecipeViewSet(viewsets.ModelViewSet):
     throttle_scope = 'recipes'
 
     def get_serializer_class(self):
-        if self.request.method in ['POST', 'PATCH']:
-            return RecipeWriteSerializer
-        return RecipeReadSerializer
+        if self.request.method in SAFE_METHODS:
+            return RecipeReadSerializer
+        return RecipeWriteSerializer
 
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     queryset = Recipe.objects.all()
+    def get_queryset(self):
+        queryset = Recipe.objects.all()
+        user = self.request.user
 
-    #     if user.is_authenticated:
-    #         queryset = queryset.annotate(
-    #             is_favorited=Exists(Favorite.objects.filter(
-    #                 user=user, recipe__pk=OuterRef('pk'))
-    #             ),
-    #             is_in_shopping_cart=Exists(Cart.objects.filter(
-    #                 user=user, recipe__pk=OuterRef('pk'))
-    #             )
-    #         )
-    #     else:
-    #         queryset = queryset.annotate(
-    #             is_favorited=Value(False, output_field=BooleanField()),
-    #             is_in_shopping_cart=Value(False, output_field=BooleanField())
-    #         )
-    #     return queryset
+        if user.is_authenticated:
+            queryset = queryset.annotate(
+                is_favorited=Exists(FavouriteRecipe.objects.filter(
+                    user=user, recipe__pk=OuterRef('pk'))),
+                is_in_shopping_cart=Exists(ShoppingCart.objects.filter(
+                    user=user, recipe__pk=OuterRef('pk')))
+            )
+        else:
+            queryset = queryset.annotate(
+                is_favorited=Value(False, output_field=BooleanField()),
+                is_in_shopping_cart=Value(False, output_field=BooleanField())
+            )
+        return queryset
 
     def add_recipe_to_list(self, model, user, pk):
         obj = model.objects.filter(user=user, recipe__id=pk)
