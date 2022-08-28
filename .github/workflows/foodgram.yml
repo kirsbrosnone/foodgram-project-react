@@ -68,13 +68,13 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
-        stack_file_name: docker-compose.yml\
+        stack_file_name: docker-compose.yml
         script: |
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_backend
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend
           sudo docker-compose stop
           sudo docker-compose rm -f
           rm .env
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_backend
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend
           touch .env
           echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
           echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
