@@ -6,7 +6,7 @@
 ![Github](https://img.shields.io/badge/github%20-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)
 
 
-[![Foodgram project](https://github.com/kirsbrosnone/foodgram-project-react/actions/workflows/foodgram.yml/badge.svg)]
+![Foodgram project](https://github.com/kirsbrosnone/foodgram-project-react/actions/workflows/foodgram.yml/badge.svg)
 
 # Foodgram-project-react
 
