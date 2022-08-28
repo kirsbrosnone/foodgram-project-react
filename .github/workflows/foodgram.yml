@@ -71,10 +71,7 @@ jobs:
         stack_file_name: docker-compose.yml
         script: |
           sudo docker-compose stop
-          sudo docker-compose rm -f
-          rm .env
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_backend
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend
+          sudo docker-compose rm backend
           touch .env
           echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
           echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
@@ -84,6 +81,8 @@ jobs:
           echo DB_HOST=${{ secrets.DB_HOST }} >> .env
           echo DB_PORT=${{ secrets.DB_PORT }} >> .env
           sudo docker-compose up -d
+          sudo docker-compose exec -T web python manage.py migrate --noinput
+          sudo docker-compose exec -T web python manage.py collectstatic --noinput
 
   send_message:
     runs-on: ubuntu-latest
