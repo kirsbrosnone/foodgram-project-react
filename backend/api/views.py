@@ -61,12 +61,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return RecipeWriteSerializer
         return RecipeReadSerializer
 
-    @action(methods=['POST', 'DELETE'], detail=True, url_path='favorite',
-            permission_classes=[IsAuthenticated, ])
+    @action(methods=['GET', 'POST', 'DELETE'], detail=True,
+            url_path='favorite', permission_classes=[IsAuthenticated, ])
     def favorite(self, request, pk):
         user = request.user
         recipe = get_object_or_404(Recipe, pk=pk)
-        if request.method == 'POST':
+        if self.request.method in ['GET', 'POST']:
             recipe_favorite, created = FavouriteRecipe.objects.get_or_create(
                 user=user, recipe=recipe
             )
@@ -79,10 +79,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
             fav = FavouriteRecipe.objects.filter(user=user, recipe=recipe)
             if fav.exists():
                 return Response(
-                    'Рецепт уже есть в списке избранного',
+                    'Рецепт уже в избранном',
                     status=status.HTTP_400_BAD_REQUEST
                 )
-        elif request.method == 'DELETE':
+        elif self.request.method == 'DELETE':
             fav = FavouriteRecipe.objects.filter(user=user, recipe=recipe)
             if fav.exists():
                 fav.delete()
