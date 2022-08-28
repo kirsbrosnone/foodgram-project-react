@@ -61,12 +61,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return RecipeWriteSerializer
         return RecipeReadSerializer
 
-    @action(methods=['GET', 'DELETE'], detail=True, url_path='favorite',
+    @action(methods=['POST', 'DELETE'], detail=True, url_path='favorite',
             permission_classes=[IsAuthenticated, ])
     def favorite(self, request, pk):
         user = request.user
         recipe = get_object_or_404(Recipe, pk=pk)
-        if request.method == 'GET':
+        if request.method == 'POST':
             recipe_favorite, created = FavouriteRecipe.objects.get_or_create(
                 user=user, recipe=recipe
             )
@@ -93,12 +93,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=['GET', 'DELETE'], detail=True,
-            url_path='shopping_cart', permission_classes=[IsAuthenticated, ])
+    @action(methods=['POST', 'DELETE'], detail=True,
+            url_path='shopping_cart', permission_classes=[IsAuthenticated])
     def shopping_cart(self, request, pk):
         user = request.user
         recipe = get_object_or_404(Recipe, pk=pk)
-        if request.method == 'GET':
+        if request.method == 'POST':
             recipe_shop, created = ShoppingCart.objects.get_or_create(
                 user=user, recipe=recipe
             )
@@ -124,7 +124,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['GET'], detail=False, url_path='download_shopping_cart',
-            permission_classes=[IsAuthenticated, ])
+            permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
         cart_file = StringIO()
         ingredients = AmountOfIngredient.objects.filter(
