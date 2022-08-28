@@ -11,7 +11,7 @@ from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from api.filters import RecipeFilter
+from api.filters import IngredientSearchFilter, RecipeFilter
 from api.permissions import AdminAuthorOrReadOnly, IsAuthor
 from api.serializers import (
     FavouriteRecipeSerializer, FollowUserSerializer, IngredientSerializer,
@@ -30,8 +30,8 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     pagination_class = None
-    filter_backends = [SearchFilter, ]
-    search_fields = ['^name', '^slug', ]
+    filter_backends = [IngredientSearchFilter, ]
+    search_fields = ['^name', ]
     throttle_scope = 'tags'
 
 
