@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
@@ -129,15 +128,13 @@ class RecipeWriteSerializer(RecipeReadSerializer):
         )
 
     def validate(self, data):
-        ingredients_data = data.get('ingredients', None)
-        for ingredient in ingredients_data:
+        ingredients_data = data.get('ingredients')
+        for ingredient in ingredients_data['ingredients']:
             if int(ingredient.get('amount')) <= 0:
                 raise serializers.ValidationError(
-                    ('Минимальное количество ингридиентов 1')
+                    'Минимальное количество ингридиентов 1'
                 )
-            get_object_or_404(
-                Ingredient, pk=ingredient['ingredient']['id'])
-            if data['ingredients'].count(ingredient) > 1:
+            if ingredients_data['ingredients'].count(ingredient) > 1:
                 raise serializers.ValidationError('Ингредиент повторяется')
         if int(data['cooking_time']) <= 0:
             raise serializers.ValidationError('Время готовки в минутах')
@@ -148,7 +145,7 @@ class RecipeWriteSerializer(RecipeReadSerializer):
                 raise serializers.ValidationError(
                     'Один и тот же тег в данном запросе встречается дважды!'
                 )
-        # data['ingredients'] = ingredients_data
+        data['ingredients'] = ingredients_data
         return data
 
     @staticmethod
