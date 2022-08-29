@@ -16,7 +16,7 @@ class RecipeFilter(FilterSet):
         queryset=Tag.objects.all(), field_name='tags__slug',
         to_field_name='slug', label='Тэг')
     author = AllValuesMultipleFilter(
-        field_name='author__username', label='Автор')
+        field_name='author__id', label='Автор')
     is_in_shopping_cart = BooleanFilter(
         field_name='is_in_shopping_cart', method='filter',
         label='В списке покупок',)
