@@ -110,10 +110,10 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_THROTTLE_RATES': {
-        'recipes': '30/minute',
-        'ingredients': '20/minute',
-        'tags': '20/minute',
-        'follows': '30/minute',
+        'recipes': '200/minute',
+        'ingredients': '100/minute',
+        'tags': '100/minute',
+        'follows': '100/minute',
     }
 }
 
