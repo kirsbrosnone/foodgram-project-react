@@ -137,7 +137,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         cart_file.write('Нужно купить: ')
         for ingredient in ingredients:
             cart_file.write(
-                '\n'.join(f'{ingredient[0]} {ingredient[2]} {ingredient[1]}, ')
+                '\n'.join(
+                    [f'{ingredient[0]}: {ingredient[2]}{ingredient[1]}, '])
             )
         response = HttpResponse(cart_file.getvalue(), content_type='text',)
         response['Content-Disposition'] = (
