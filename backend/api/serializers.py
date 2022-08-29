@@ -134,7 +134,7 @@ class RecipeWriteSerializer(RecipeReadSerializer):
                 raise serializers.ValidationError(
                     ('Минимальное количество ингридиентов 1')
                 )
-            if ingredients_data.count(ingredient) > 1:
+            if data['ingredients'].count(ingredient) > 1:
                 raise serializers.ValidationError('Ингредиент повторяется')
         if int(data['cooking_time']) <= 0:
             raise serializers.ValidationError('Время готовки в минутах')

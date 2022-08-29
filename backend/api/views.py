@@ -134,7 +134,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             'ingredient_recipe__name', 'ingredient_recipe__measurement_unit',
             'amount'
         )
-        cart_file.write('Нужно купить:')
+        cart_file.write('Нужно купить: \n')
         cart_file.write('\n'.join([
             f'{ingredient[0]}: {ingredient[2]} {ingredient[1]}, '
             for ingredient in ingredients
