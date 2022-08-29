@@ -30,7 +30,7 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     pagination_class = None
-    filter_backends = [IngredientSearchFilter, ]
+    filter_backends = [SearchFilter, ]
     search_fields = ['^name', ]
     throttle_scope = 'tags'
 
@@ -41,7 +41,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
-    filter_backends = [SearchFilter, ]
+    filter_backends = [IngredientSearchFilter, ]
     search_fields = ['^name', '$name', ]
     throttle_scope = 'ingredients'
 
