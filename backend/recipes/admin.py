@@ -15,7 +15,9 @@ class IngredientAdmin(admin.ModelAdmin):
 
 @admin.register(AmountOfIngredient)
 class AmountOfIngredientAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'ingredient', 'amount', )
+    list_display = ('pk', 'ingredient_recipe', 'amount', )
+    search_fields = ('ingredient_recipe', )
+    autocomplete_fields = ('ingredient_recipe', )
 
 
 @admin.register(Tag)
@@ -32,6 +34,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'pk', 'pub_date', 'author', 'name', 'text', 'cooking_time',
     )
     readonly_fields = ('favourites', )
+    autocomplete_fields = ('ingredients', 'tags', 'author')
     list_filter = ('pub_date', 'cooking_time', )
     search_fields = ('author', 'name', 'text', )
     empty_value_display = '-пусто-'
@@ -43,14 +46,12 @@ class RecipeAdmin(admin.ModelAdmin):
 @admin.register(FavouriteRecipe)
 class FavouriteRecipeAdmin(admin.ModelAdmin):
     list_display = ('pk', 'user', 'recipe', )
-    list_filter = ('user', )
-    search_fields = ('recipe', )
-    empty_value_display = '-пусто-'
+    search_fields = ('user', 'recipe', )
+    autocomplete_fields = ('user', 'recipe', )
 
 
 @admin.register(ShoppingCart)
 class ShoppingCartAdmin(admin.ModelAdmin):
     list_display = ('pk', 'user', 'recipe', )
-    list_filter = ('user', )
-    search_fields = ('recipe', )
-    empty_value_display = '-пусто-'
+    search_fields = ('user', 'recipe', )
+    autocomplete_fields = ('user', 'recipe', )

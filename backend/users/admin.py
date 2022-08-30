@@ -26,7 +26,7 @@ class CustomUserAdmin(UserAdmin):
     list_display = (
         'pk', 'username', 'email', 'first_name', 'last_name', 'is_staff',
     )
-    list_filter = ('username', 'email', 'first_name', 'last_name')
+    list_filter = ('is_staff', )
     search_fields = ('username', 'email', 'first_name', 'last_name')
     empty_value_display = '-пусто-'
 
