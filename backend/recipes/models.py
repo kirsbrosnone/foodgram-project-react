@@ -90,7 +90,7 @@ class Recipe(models.Model):
     )
     tags = models.ManyToManyField(Tag, blank=False, related_name='recipes')
     cooking_time = models.PositiveSmallIntegerField(
-        'Время приготовления', blank=False, default=1,
+        'Время приготовления', blank=False, default=10,
         help_text='В минутах',
         validators=[
             MinValueValidator(1, 'Минимальное время приготовления 1 мин.')
