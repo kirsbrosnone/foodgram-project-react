@@ -13,22 +13,11 @@
 ### Описание проекта
 Сайт Foodgram, «Продуктовый помощник». На этом сервисе пользователи смогут публиковать рецепты, подписываться на публикации других пользователей, добавлять понравившиеся рецепты в список «Избранное», а перед походом в магазин скачивать сводный список продуктов, необходимых для приготовления одного или нескольких выбранных блюд.
 
-# Развернутый проект на сервере YandexCloud:
+### Запуск проекта на собственном сервере через Github Actions.
 
-Backend:
-
- `84.252.140.50/api/` - api
- 
- `84.252.140.50/api/docs/` - документация к api
- 
- `84.252.140.50/admin` - админ-интерфейс проекта (login/password: admin/Admin12345!)
-
-Frontend:
-
- `84.252.140.50` - frontend проекта 
-
-### Запуск проекта на своем ПК.
-`Требуется установленный Docker, docker-compose.`
+`Проект проверен на сервере с ОС Ubuntu 22.04 LTS.`
+`Для корректной работы, отключите веб-сервер NGINX и настройте Firewall`
+`Для корректной работы, отключите все работающие docker-контейнеры`
 
 1. Скопировать или сделать форк репозитория.
 2. На странице скопированного проекта, перейти `Github - Settings - Secrets - Action secrets` и добавить следующие значения: 
@@ -49,20 +38,33 @@ PASSPHRASE - кодовая фраза для ssh-ключа.
 TELEGRAM_TO - id телеграм-аккаунта (пишем @userinfobot "/start").
 TELEGRAM_TOKEN - токен бота (@BotFather, "/token <имя бота>" для выдачи нового token, или "/mybots" для просмотра текущего токена).
 ```
-3. Локально перейти в склонированный репозиторий `/infra/`
-4. Выполнить запуск docker-compose скрипта:
+3. Локально перейти в `/infra/nginx.conf` поменять ip-адрес Server name на свой ip.
+4. Подключиться на свой сервер. Перейти в дирректорию `home/<username>/`.
+5. Скопировать с локальной машины на свой сервер файлы: `infra/docker-compose.yaml` и `infra/nginx.conf`. Сделать это можно при помощи команды scp. Например, находясь в директории `/infra/` выполнить команду: `scp default.conf <username>@<host>/home/<username>/nginx.conf`.
+6. Если на сервере не установлен Docker и docker-compose, то необходимо выполнить установку:
 ```sh
-docker-compose up -d --build
+sudo apt install docker.io
 ```
-5. После выполнить команды:
 ```sh
-docker-compose exec -T backend python manage.py migrate --noinput
-docker-compose exec -T backend python manage.py collectstatic --noinput
-docker-compose exec -T backend python manage.py createsuperuser
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 ```
-6. Проверить работу сайта
+```sh
+sudo chmod +x /usr/local/bin/docker-compose
+```
+Проверяем, что установка прошла корректно:
+```sh
+sudo docker --version # появится сообщение вида Docker version 20.10.12, build 20.10.12-0ubuntu2~20.04.1
+```
+```sh
+sudo docker-compose --version # появится сообзение вида docker-compose version 1.29.2, build 5becea4c
+```
+7. Запушить все изменения в свой репозиторий на Github. Автоматически запустится workflow.
 
-PS. Инструкция по развертыванию проекта на своем сервере находится в `/.github/workflows/`
+8. Создать суперпользователя (для логина в админ-зону api), на подключенном сервере:
+```sh
+sudo docker-compose exec backend python manage.py createsuperuser
+```
+9. Проверить работу сайта
 
 ### Автор
 
